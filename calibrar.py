@@ -105,8 +105,9 @@ class Calibrador(QWidget):
             if isinstance(xi, list) and isinstance(xj, list) and isinstance(yi, list) and isinstance(yj, list):
                 self.c1, self.c2 = corregir(w, xi, xj, yi, yj)
                 crear_archivo(w, self.c1, self.c2, self.x1.text().split('.')[0], self.x2.text().split('.')[0])
-                self.contents.setText('Completado.\nArchivos generados en el Escritorio.\n\n'
+                self.contents.setText('Calibrado.\nArchivos generados en el Escritorio.\n\n'
                                       'Se calibraron los archivos:\n'+self.x1.text()+'\n'+self.x2.text())
+
             else:
                 if isinstance(xi, str):
                     self.contents.setText('Se encontró inconsistencia en los datos contenidos por el archivo: \n\n* '
@@ -128,6 +129,7 @@ class Calibrador(QWidget):
                                           +self.y2.text()+'\n\n'+'Limpie los campos e ingrese nuevamente archivos '
                                           'con datos correctos de la forma:\n\nWavelength\tnombre_archivo\n350\t'
                                             '7,06635974347591E-03\n351\t7,32030812650919E-03\n...')
+
 
 
 def main():
