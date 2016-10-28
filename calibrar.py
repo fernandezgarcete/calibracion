@@ -68,11 +68,11 @@ class Calibrador(QWidget):
         layout.addWidget(self.btcalibrar)
 
         self.setLayout(layout)
-        self.setWindowTitle('Calibrador')
+        self.setWindowTitle('Calibrador Radiométrico')
         self.setWindowIcon(QIcon('c:/Users/Juanjo/Pictures/CONAE_chico_transp.ico'))
 
     def abrirArchivo(self):
-        f = QFileDialog.getOpenFileName(self, 'Abrir archivo', expanduser('~'), 'Textos (*.txt)')
+        f = QFileDialog.getOpenFileName(self, 'Abrir archivo a calibrar', expanduser('~'), 'Textos (*.txt)')
         nom = f.split('/')
         if self.x1.text() == '':
             self.xi = f
@@ -103,8 +103,8 @@ class Calibrador(QWidget):
             self.contents.setText('Calibrando...')
             w, xi, xj, yi, yj = leer(self.xi, self.xj, self.yi, self.yj)
             if isinstance(xi, list) and isinstance(xj, list) and isinstance(yi, list) and isinstance(yj, list):
-                self.c1, self.c2 = corregir(w, xi, xj, yi, yj)
-                crear_archivo(w, self.c1, self.c2, self.x1.text().split('.')[0], self.x2.text().split('.')[0])
+                self.c1, self.c2, pends, ords = corregir(w, xi, xj, yi, yj)
+                crear_archivo(w, self.c1, self.c2, self.x1.text().split('.')[0], self.x2.text().split('.')[0], pends, ords)
                 self.contents.setText('Calibrado.\nArchivos generados en el Escritorio.\n\n'
                                       'Se calibraron los archivos:\n'+self.x1.text()+'\n'+self.x2.text())
 

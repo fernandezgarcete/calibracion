@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'Juanjo'
 
 from os.path import expanduser, sep
@@ -83,11 +85,11 @@ def corregir(wl, x1, x2, y1, y2):
     for i, j in enumerate(wl):
         cor1.append((a[i]*x1[i])+b[i])
         cor2.append((a[i]*x2[i])+b[i])
-    return cor1, cor2
+    return cor1, cor2, a, b
 
 
 # Crea los archivos con los nuevos valores
-def crear_archivo(wl, cor1, cor2, nom1, nom2):
+def crear_archivo(wl, cor1, cor2, nom1, nom2, pends, ords):
     desk = expanduser('~') + '\Desktop'
     with open(desk + sep + nom1 + '-Calibrado.txt', 'a') as c1:
         c1.write('Wavelength\tValor Corregido\n')
@@ -97,3 +99,24 @@ def crear_archivo(wl, cor1, cor2, nom1, nom2):
         c2.write('Wavelength\tValor Corregido\n')
         for i, j in enumerate(wl):
             c2.write(str(wl[i])+'\t'+str(cor2[i])+'\n')
+
+    # escribimos el archivo pendientes
+    if os.path.isfile(desk + sep + 'pendientes-a.txt'):
+        # leer lineas en un array
+        lineas_aux = []
+        with open(desk + sep + 'pendientes-a.txt', 'r') as a:
+            lineas = a.readlines()
+        # agrega contenido a cada linea
+        for i, j in enumerate(wl):
+            if i == 0:
+                lineas_aux.append(lineas[0].split('\n')[0] + '\ta\n')
+            else:
+                lineas_aux.append(lineas[i].split('\n')[0] + '\t' + str(pends[i]) + '\n')
+        # sobreescribe el contenido antiguo de cada linea con el nuevo
+        with open(desk + sep + 'pendientes-a.txt', 'w') as a:
+            a.write("".join(lineas_aux))
+    else:
+        with open(desk + sep + 'pendientes-a.txt', 'a') as a:
+            a.write('Wavelength\ta\n')
+            for i, j in enumerate(wl):
+                a.write(str(wl[i]) + '\t' + str(pends[i]) + '\n')
